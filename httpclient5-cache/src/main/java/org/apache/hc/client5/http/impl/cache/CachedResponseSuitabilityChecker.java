@@ -104,7 +104,7 @@ class CachedResponseSuitabilityChecker {
         while (it.hasNext()) {
             final HeaderElement elt = it.next();
             if (HeaderConstants.CACHE_CONTROL_MAX_STALE.equals(elt.getName())) {
-                if ((elt.getValue() == null || "".equals(elt.getValue().trim())) && maxstale == -1) {
+                if ((elt.getValue() == null || elt.getValue().trim().isEmpty()) && maxstale == -1) {
                     maxstale = Long.MAX_VALUE;
                 } else {
                     try {
@@ -185,8 +185,8 @@ class CachedResponseSuitabilityChecker {
 
             if (HeaderConstants.CACHE_CONTROL_MAX_AGE.equals(elt.getName())) {
                 try {
-                    final int maxage = Integer.parseInt(elt.getValue());
-                    if (validityStrategy.getCurrentAgeSecs(entry, now) > maxage) {
+                    final int maxAge = Integer.parseInt(elt.getValue());
+                    if (validityStrategy.getCurrentAgeSecs(entry, now) > maxAge) {
                         log.debug("Response from cache was NOT suitable due to max age");
                         return false;
                     }
